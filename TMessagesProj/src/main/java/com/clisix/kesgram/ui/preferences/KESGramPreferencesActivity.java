@@ -147,9 +147,12 @@ public class KESGramPreferencesActivity extends BasePreferencesActivity implemen
     @Override
     public boolean onFragmentCreate() {
         super.onFragmentCreate();
-        // todo: register `MESSAGES_DELETED_NOTIFICATION` on all notification centers, not only on the current account
 
-        NotificationCenter.getInstance(UserConfig.selectedAccount).addObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+        for (int i = 0; i < UserConfig.MAX_ACCOUNT_COUNT; i++) {
+            if (UserConfig.isValidAccount(i)) {
+                NotificationCenter.getInstance(i).addObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+            }
+        }
         NotificationCenter.getGlobalInstance().addObserver(this, AyuConstants.AYUSYNC_STATE_CHANGED);
 
         return true;
@@ -173,7 +176,9 @@ public class KESGramPreferencesActivity extends BasePreferencesActivity implemen
     public void onFragmentDestroy() {
         super.onFragmentDestroy();
 
-        NotificationCenter.getInstance(UserConfig.selectedAccount).removeObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+        for (int i = 0; i < UserConfig.MAX_ACCOUNT_COUNT; i++) {
+            NotificationCenter.getInstance(i).removeObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+        }
         NotificationCenter.getGlobalInstance().removeObserver(this, AyuConstants.AYUSYNC_STATE_CHANGED);
     }
 
