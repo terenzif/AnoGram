@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -56,6 +57,17 @@ public class NativeLoader {
             }
         } catch (Exception e) {
             FileLog.e(e);
+        }
+
+        // Workaround for ZipPathValidator added in Android 14 (API 34)
+        if (Build.VERSION.SDK_INT >= 34) {
+            try {
+                Class<?> clazz = Class.forName("dalvik.system.ZipPathValidator");
+                Method method = clazz.getDeclaredMethod("clearCallback");
+                method.invoke(null);
+            } catch (Throwable e) {
+                FileLog.e(e);
+            }
         }
 
         ZipFile zipFile = null;

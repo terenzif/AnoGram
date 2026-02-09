@@ -1,1 +1,12 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    plugins {
+        id 'com.android.settings' version '9.0.0'
+    }
+}
+
 include ':TMessagesProj'

@@ -85,6 +85,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ServiceCompat;
 
 import com.exteragram.messenger.ExteraConfig;
 
@@ -693,6 +694,14 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 				FileLog.e("Tried to start the VoIP service when it's already started");
 			}
 			return START_NOT_STICKY;
+		}
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+			NotificationsController.checkOtherNotificationsChannel();
+			Notification.Builder builder = new Notification.Builder(this, NotificationsController.OTHER_NOTIFICATIONS_CHANNEL)
+				.setContentTitle("Call Service Starting")
+				.setSmallIcon(R.drawable.notification);
+			startForeground(ID_ONGOING_CALL_NOTIFICATION, builder.build());
 		}
 
 		currentAccount = intent.getIntExtra("account", -1);
@@ -2233,6 +2242,7 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 				Utilities.globalQueue.postRunnable(() -> {
 					if (spPlayId != 0) {
 						soundPool.stop(spPlayId);
+						spPlayId = 0;
 					}
 					spPlayId = soundPool.play(spVoiceChatConnecting, 1.0f, 1.0f, 0, -1, 1);
 				});
@@ -3054,7 +3064,11 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 		if (BuildVars.LOGS_ENABLED) {
 			FileLog.d("=============== VoIPService STOPPING ===============");
 		}
-		stopForeground(true);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_DETACH);
+		} else {
+			stopForeground(true);
+		}
 		stopRinging();
 		if (currentAccount >= 0) {
 			if (ApplicationLoader.mainInterfacePaused || !ApplicationLoader.isScreenOn) {
@@ -3635,7 +3649,8 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 	}
 
 	private void loadResources() {
-		WebRtcAudioTrack.setAudioTrackUsageAttribute(AudioAttributes.USAGE_VOICE_COMMUNICATION);
+		WebRtcAudioTrack.setAudioTrackUsageAttribute(hasRtmpStream() ? AudioAttributes.USAGE_MEDIA : AudioAttributes.USAGE_VOICE_COMMUNICATION);
+		WebRtcAudioTrack.setAudioStreamType(hasRtmpStream() ? AudioManager.USE_DEFAULT_STREAM_TYPE : AudioManager.STREAM_VOICE_CALL);
 		Utilities.globalQueue.postRunnable(() -> {
 			soundPool = new SoundPool(1, AudioManager.STREAM_VOICE_CALL, 0);
 			spConnectingId = soundPool.load(this, R.raw.voip_connecting, 1);
@@ -3684,7 +3699,7 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 			StatsController.getInstance(currentAccount).incrementSentBytesCount(lastNetInfo != null && lastNetInfo.isRoaming() ? StatsController.TYPE_ROAMING : StatsController.TYPE_MOBILE, StatsController.TYPE_CALLS, mobileSentDiff);
 		}
 		if (mobileRecvdDiff > 0) {
-			StatsController.getInstance(currentAccount).incrementReceivedBytesCount(lastNetInfo != null && lastNetInfo.isRoaming() ? StatsController.TYPE_ROAMING : StatsController.TYPE_MOBILE, StatsController.TYPE_CALLS, mobileRecvdDiff);
+			StatsController.getInstance(currentAccount).incrementReceivedBytesCount(lastNetInfo != null && lastNetInfo.isRoaming() ? StatsController.TYPE_ROAMING : StatsController.TYPE_CALLS, mobileRecvdDiff);
 		}
 	}
 
@@ -4385,10 +4400,18 @@ public class VoIPService extends Service implements SensorEventListener, AudioMa
 
 	public void handleNotificationAction(Intent intent) {
 		if ((getPackageName() + ".END_CALL").equals(intent.getAction())) {
-			stopForeground(true);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+				ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_DETACH);
+			} else {
+				stopForeground(true);
+			}
 			hangUp();
 		} else if ((getPackageName() + ".DECLINE_CALL").equals(intent.getAction())) {
-			stopForeground(true);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+				ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_DETACH);
+			} else {
+				stopForeground(true);
+			}
 			declineIncomingCall(DISCARD_REASON_LINE_BUSY, null);
 		} else if ((getPackageName() + ".ANSWER_CALL").equals(intent.getAction())) {
 			acceptIncomingCallFromNotification();

@@ -133,6 +133,7 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.TMessages.Start"
         android:usesCleartextTraffic="true"
+        android:resizeableActivity="true"
         tools:replace="android:supportsRtl">
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -578,7 +579,8 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.measurement.UPLOAD" />
                 <action android:name="com.android.vending.INSTALL_REFERRER"/>
@@ -805,7 +807,7 @@
 
         <receiver
             android:name=".ChatsWidgetProvider"
-            android:exported="false">
+            android:exported="true">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/chats_widget_info" />
@@ -821,7 +823,7 @@
 
         <receiver
             android:name=".ContactsWidgetProvider"
-            android:exported="false">
+            android:exported="true">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/contacts_widget_info" />
