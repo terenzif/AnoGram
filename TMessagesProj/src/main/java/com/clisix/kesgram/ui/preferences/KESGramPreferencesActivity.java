@@ -182,6 +182,7 @@ public class KESGramPreferencesActivity extends BasePreferencesActivity implemen
         for (int i = 0; i < UserConfig.MAX_ACCOUNT_COUNT; i++) {
             if (registeredAccounts[i]) {
                 NotificationCenter.getInstance(i).removeObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+                registeredAccounts[i] = false;
             }
         }
         NotificationCenter.getGlobalInstance().removeObserver(this, AyuConstants.AYUSYNC_STATE_CHANGED);
