@@ -150,6 +150,11 @@ public class KESGramPreferencesActivity extends BasePreferencesActivity implemen
     public boolean onFragmentCreate() {
         super.onFragmentCreate();
 
+        // Reset registered accounts to ensure clean state on fragment recreation
+        for (int i = 0; i < UserConfig.MAX_ACCOUNT_COUNT; i++) {
+            registeredAccounts[i] = false;
+        }
+
         for (int i = 0; i < UserConfig.MAX_ACCOUNT_COUNT; i++) {
             if (UserConfig.isValidAccount(i)) {
                 NotificationCenter.getInstance(i).addObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
