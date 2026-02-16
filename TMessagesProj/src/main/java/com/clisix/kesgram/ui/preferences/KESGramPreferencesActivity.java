@@ -48,6 +48,8 @@ public class KESGramPreferencesActivity extends BasePreferencesActivity implemen
 
     private static final int TOGGLE_BUTTON_VIEW = 1000;
 
+    private boolean[] registeredAccounts = new boolean[UserConfig.MAX_ACCOUNT_COUNT];
+
     private int ghostEssentialsHeaderRow;
     private int ghostModeToggleRow;
     private int sendReadPacketsRow;
@@ -151,6 +153,7 @@ public class KESGramPreferencesActivity extends BasePreferencesActivity implemen
         for (int i = 0; i < UserConfig.MAX_ACCOUNT_COUNT; i++) {
             if (UserConfig.isValidAccount(i)) {
                 NotificationCenter.getInstance(i).addObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+                registeredAccounts[i] = true;
             }
         }
         NotificationCenter.getGlobalInstance().addObserver(this, AyuConstants.AYUSYNC_STATE_CHANGED);
@@ -177,7 +180,10 @@ public class KESGramPreferencesActivity extends BasePreferencesActivity implemen
         super.onFragmentDestroy();
 
         for (int i = 0; i < UserConfig.MAX_ACCOUNT_COUNT; i++) {
-            NotificationCenter.getInstance(i).removeObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+            if (registeredAccounts[i]) {
+                NotificationCenter.getInstance(i).removeObserver(this, AyuConstants.MESSAGES_DELETED_NOTIFICATION);
+                registeredAccounts[i] = false;
+            }
         }
         NotificationCenter.getGlobalInstance().removeObserver(this, AyuConstants.AYUSYNC_STATE_CHANGED);
     }
