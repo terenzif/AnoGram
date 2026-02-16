@@ -1379,17 +1379,21 @@ public class MessagesStorage extends BaseController {
         try {
             HashSet<Integer> existingTopics = new HashSet<>();
             HashMap<Integer, Integer> pinnedValues = new HashMap<>();
-            for (int i = 0; i < topics.size(); i++) {
-                TLRPC.TL_forumTopic topic = topics.get(i);
-                SQLiteCursor cursor = database.queryFinalized("SELECT did, pinned FROM topics WHERE did = " + dialogId + " AND topic_id = " + topic.id);
-                boolean exist = cursor.next();
-                if (exist) {
-                    pinnedValues.put(i, cursor.intValue(2));
+            if (!topics.isEmpty()) {
+                SparseIntArray topicIdToPinned = new SparseIntArray();
+                SQLiteCursor cursor = database.queryFinalized("SELECT topic_id, pinned FROM topics WHERE did = " + dialogId);
+                while (cursor.next()) {
+                    topicIdToPinned.put(cursor.intValue(0), cursor.intValue(1));
                 }
                 cursor.dispose();
-                cursor = null;
-                if (exist) {
-                    existingTopics.add(i);
+
+                for (int i = 0; i < topics.size(); i++) {
+                    TLRPC.TL_forumTopic topic = topics.get(i);
+                    int index = topicIdToPinned.indexOfKey(topic.id);
+                    if (index >= 0) {
+                        pinnedValues.put(i, topicIdToPinned.valueAt(index));
+                        existingTopics.add(i);
+                    }
                 }
             }
             if (replace) {
