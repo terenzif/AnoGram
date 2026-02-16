@@ -46,6 +46,7 @@
   <string name="RegexFiltersEdit">Адрэгадаваць фільтр</string>
   <string name="RegexFiltersAddDescription">Вы можаце выкарыстоўваць сайт <![CDATA[<a href="https://regex101.com">regex101.com</a>]]>, каб праверыць вашыя рэгулярныя выразы. Вы можаце таксама выкарыстоўваць звычайны тэкст, але не забудзьце экранаваць дужкі.</string>
   <string name="RegexFiltersAddError">Сінтаксічная памылка Regex</string>
+  <string name="RegexFiltersAddEmpty">Рэгулярны выраз не можа быць пустым</string>
   <string name="AyuSyncHeader">AyuSync</string>
   <string name="AyuSyncStatusTitle">Стан сінхранізацыі</string>
   <string name="AyuSyncStatusOk">далучаны</string>

@@ -47,6 +47,7 @@
   <string name="RegexFiltersAddDescription">Você pode usar o site <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> para testar completamente a sua expressão regular.
 Você também pode usar texto simples, mas não se esqueça de escapar de parênteses.</string>
   <string name="RegexFiltersAddError">Erro de sintaxe Regex</string>
+  <string name="RegexFiltersAddEmpty">O regex não pode estar vazio</string>
   <string name="AyuSyncHeader">AyuSync</string>
   <string name="AyuSyncStatusTitle">Sync status</string>
   <string name="AyuSyncStatusOk">conectado</string>

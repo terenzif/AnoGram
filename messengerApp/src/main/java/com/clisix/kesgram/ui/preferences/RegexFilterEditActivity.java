@@ -67,7 +67,7 @@ public class RegexFilterEditActivity extends BaseFragment {
                     var text = editField.getText().toString();
 
                     if (TextUtils.isEmpty(text)) {
-                        // todo: show error toast
+                        BulletinFactory.of(RegexFilterEditActivity.this).createSimpleBulletin(R.raw.error, LocaleController.getString(R.string.RegexFiltersAddEmpty)).show();
                         return;
                     }
 
@@ -120,8 +120,6 @@ public class RegexFilterEditActivity extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                doneButton.setEnabled(!TextUtils.isEmpty(s));
-
                 if (errorTextView != null) {
                     errorTextView.setText("");
                 }

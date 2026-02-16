@@ -47,6 +47,7 @@
   <string name="RegexFiltersAddDescription">Ви можете використовувати <![CDATA[<a href="https://regex101.com">regex101.com</a>]]> для тесту ваших регулярних виразів.
 Ви також можете використовувати звичайний текст, але не забудьте екранувати дужки.</string>
   <string name="RegexFiltersAddError">Синтаксична помилка регулярного виразу</string>
+  <string name="RegexFiltersAddEmpty">Регулярний вираз не може бути порожнім</string>
   <string name="AyuSyncHeader">AyuSync</string>
   <string name="AyuSyncStatusTitle">Статус синхронізації</string>
   <string name="AyuSyncStatusOk">під’єднано</string>
