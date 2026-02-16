@@ -79,6 +79,13 @@ android {
         resValues true
     }
 
+    Properties localProperties = new Properties()
+    if (project.rootProject.file('API_KEYS').exists()) {
+        localProperties.load(project.rootProject.file('API_KEYS').newDataInputStream())
+    } else if (project.rootProject.file('local.properties').exists()) {
+        localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+    }
+
     defaultConfig {
         applicationId "com.clisix.kesgram"
         versionCode Integer.parseInt(APP_VERSION_CODE)
@@ -86,11 +93,6 @@ android {
 
         minSdk 21
         targetSdk 33
-
-        Properties localProperties = new Properties()
-        if (project.rootProject.file('API_KEYS').exists()) {
-            localProperties.load(project.rootProject.file('API_KEYS').newDataInputStream())
-        }
 
         buildConfigField 'int', 'APP_ID', localProperties.getProperty("APP_ID", "12345")
         buildConfigField 'String', 'APP_HASH', '"' + localProperties.getProperty("APP_HASH", "0123456789abcdef0123456789abcdef") + '"'
@@ -138,14 +140,14 @@ android {
 
     signingConfigs {
         release {
-            Properties localProperties = new Properties()
-            if (project.rootProject.file('API_KEYS').exists()) {
-                localProperties.load(project.rootProject.file('API_KEYS').newDataInputStream())
+            def keystorePath = localProperties.getProperty("SIGNING_KEY_STORE_PATH", "kesgram.keystore")
+            def keystoreFile = file(keystorePath)
+            if (keystoreFile.exists()) {
+                storeFile keystoreFile
+                storePassword localProperties.getProperty("SIGNING_KEY_STORE_PASSWORD")
+                keyAlias localProperties.getProperty("SIGNING_KEY_ALIAS")
+                keyPassword localProperties.getProperty("SIGNING_KEY_PASSWORD")
             }
-            storeFile file("./kesgram.keystore")
-            storePassword localProperties.getProperty("SIGNING_KEY_STORE_PASSWORD")
-            keyAlias localProperties.getProperty("SIGNING_KEY_ALIAS")
-            keyPassword localProperties.getProperty("SIGNING_KEY_PASSWORD")
         }
     }
 
@@ -159,7 +161,9 @@ android {
         debug {
             debuggable true
             jniDebuggable false
-            signingConfig signingConfigs.release
+            if (signingConfigs.release.storeFile != null) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             shrinkResources false
             multiDexEnabled true
@@ -172,7 +176,9 @@ android {
         release {
             debuggable false
             jniDebuggable false
-            signingConfig signingConfigs.release
+            if (signingConfigs.release.storeFile != null) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled true
             shrinkResources true
             multiDexEnabled true
