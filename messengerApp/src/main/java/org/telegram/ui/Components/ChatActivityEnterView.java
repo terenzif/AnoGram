@@ -173,8 +173,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import com.clisix.kesgram.KESWaiter;
-import com.clisix.kesgram.KESCrypto;
+import dev.gosserness.anogram.KESWaiter;
+import dev.gosserness.anogram.KESCrypto;
 
 public class ChatActivityEnterView extends BlurredFrameLayout implements NotificationCenter.NotificationCenterDelegate, SizeNotifierFrameLayout.SizeNotifierFrameLayoutDelegate, StickersAlert.StickersAlertDelegate {
 

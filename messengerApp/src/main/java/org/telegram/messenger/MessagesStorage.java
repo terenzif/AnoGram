@@ -22,10 +22,10 @@ import android.util.SparseIntArray;
 import androidx.annotation.UiThread;
 import androidx.collection.LongSparseArray;
 
-import com.clisix.kesgram.AyuConfig;
-import com.clisix.kesgram.messages.AyuMessagesController;
+import dev.gosserness.anogram.AyuConfig;
+import dev.gosserness.anogram.messages.AyuMessagesController;
 
-import com.clisix.kesgram.messages.AyuSavePreferences;
+import dev.gosserness.anogram.messages.AyuSavePreferences;
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.SQLite.SQLiteCursor;
 import org.telegram.SQLite.SQLiteDatabase;

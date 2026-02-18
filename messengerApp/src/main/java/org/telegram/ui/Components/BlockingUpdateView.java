@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
-import com.clisix.kesgram.AyuConstants;
+import dev.gosserness.anogram.AyuConstants;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;

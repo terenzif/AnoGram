@@ -71,7 +71,7 @@ import com.exteragram.messenger.camera.CameraXController;
 import com.exteragram.messenger.camera.CameraXUtils;
 import com.google.android.exoplayer2.ExoPlayer;
 
-import com.clisix.kesgram.AyuConfig;
+import dev.gosserness.anogram.AyuConfig;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.AutoDeleteMediaTask;
