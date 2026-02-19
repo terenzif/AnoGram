@@ -44,14 +44,6 @@ public class FileStreamLoadOperation extends BaseDataSource implements FileLoadO
         super(/* isNetwork= */ false);
     }
 
-    @Deprecated
-    public FileStreamLoadOperation(@Nullable TransferListener listener) {
-        this();
-        if (listener != null) {
-            addTransferListener(listener);
-        }
-    }
-
     @Override
     public long open(DataSpec dataSpec) throws IOException {
         uri = dataSpec.uri;
