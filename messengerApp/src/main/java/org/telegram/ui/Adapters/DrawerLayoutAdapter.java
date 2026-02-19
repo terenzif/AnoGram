@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.exteragram.messenger.ExteraConfig;
 import com.exteragram.messenger.utils.ChatUtils;
 import com.exteragram.messenger.utils.SystemUtils;
-import dev.gosserness.anogram.AyuConfig;
-import dev.gosserness.anogram.AyuConstants;
+import com.clisix.kesgram.AyuConfig;
+import com.clisix.kesgram.AyuConstants;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.LocaleController;

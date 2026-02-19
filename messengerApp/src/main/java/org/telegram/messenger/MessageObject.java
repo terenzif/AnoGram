@@ -31,8 +31,8 @@ import android.util.Base64;
 import androidx.collection.LongSparseArray;
 
 import com.exteragram.messenger.boost.encryption.BaseEncryptor;
-import dev.gosserness.anogram.AyuConfig;
-import dev.gosserness.anogram.AyuConstants;
+import com.clisix.kesgram.AyuConfig;
+import com.clisix.kesgram.AyuConstants;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.browser.Browser;

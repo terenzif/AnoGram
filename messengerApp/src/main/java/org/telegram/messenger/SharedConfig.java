@@ -24,7 +24,7 @@ import android.webkit.WebView;
 import androidx.annotation.IntDef;
 import androidx.core.content.pm.ShortcutManagerCompat;
 
-import dev.gosserness.anogram.AyuConstants;
+import com.clisix.kesgram.AyuConstants;
 
 import org.json.JSONObject;
 import org.telegram.tgnet.ConnectionsManager;

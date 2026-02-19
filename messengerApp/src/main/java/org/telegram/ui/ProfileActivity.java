@@ -102,9 +102,9 @@ import com.exteragram.messenger.utils.AppUtils;
 import com.exteragram.messenger.utils.CanvasUtils;
 import com.exteragram.messenger.utils.ChatUtils;
 import com.exteragram.messenger.utils.LocaleUtils;
-import dev.gosserness.anogram.AyuConfig;
+import com.clisix.kesgram.AyuConfig;
 
-import dev.gosserness.anogram.ui.preferences.AyuGramPreferencesActivity;
+import com.clisix.kesgram.ui.preferences.AyuGramPreferencesActivity;
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;

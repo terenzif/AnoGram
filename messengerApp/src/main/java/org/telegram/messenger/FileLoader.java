@@ -11,7 +11,7 @@ package org.telegram.messenger;
 import android.text.TextUtils;
 import android.util.SparseArray;
 
-import dev.gosserness.anogram.utils.AyuFileLocation;
+import com.clisix.kesgram.utils.AyuFileLocation;
 
 import org.telegram.tgnet.TLObject;
 import org.telegram.tgnet.TLRPC;

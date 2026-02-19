@@ -17,7 +17,7 @@ import androidx.annotation.IntDef;
 import androidx.collection.LongSparseArray;
 
 import com.google.android.exoplayer2.util.Log;
-import dev.gosserness.anogram.AyuConfig;
+import com.clisix.kesgram.AyuConfig;
 
 import org.telegram.messenger.voip.Instance;
 import org.telegram.messenger.voip.VoIPService;

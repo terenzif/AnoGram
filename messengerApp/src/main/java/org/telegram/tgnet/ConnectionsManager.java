@@ -9,11 +9,11 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Base64;
 
-import dev.gosserness.anogram.AyuConfig;
-import dev.gosserness.anogram.AyuConstants;
-import dev.gosserness.anogram.sync.AyuSyncController;
-import dev.gosserness.anogram.utils.AyuGhostUtils;
-import dev.gosserness.anogram.utils.AyuState;
+import com.clisix.kesgram.AyuConfig;
+import com.clisix.kesgram.AyuConstants;
+import com.clisix.kesgram.sync.AyuSyncController;
+import com.clisix.kesgram.utils.AyuGhostUtils;
+import com.clisix.kesgram.utils.AyuState;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

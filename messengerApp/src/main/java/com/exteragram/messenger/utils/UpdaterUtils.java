@@ -27,7 +27,7 @@ import androidx.core.content.FileProvider;
 
 import com.exteragram.messenger.ExteraConfig;
 import com.exteragram.messenger.preferences.updater.UpdaterBottomSheet;
-import dev.gosserness.anogram.AyuConstants;
+import com.clisix.kesgram.AyuConstants;
 
 import org.json.JSONObject;
 import org.telegram.messenger.AndroidUtilities;

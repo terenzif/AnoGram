@@ -63,10 +63,10 @@ import androidx.annotation.RawRes;
 import androidx.annotation.RequiresApi;
 import androidx.core.util.Consumer;
 
-import dev.gosserness.anogram.AyuConstants;
-import dev.gosserness.anogram.messages.AyuMessagesController;
-import dev.gosserness.anogram.messages.AyuSavePreferences;
-import dev.gosserness.anogram.utils.AyuState;
+import com.clisix.kesgram.AyuConstants;
+import com.clisix.kesgram.messages.AyuMessagesController;
+import com.clisix.kesgram.messages.AyuSavePreferences;
+import com.clisix.kesgram.utils.AyuState;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;

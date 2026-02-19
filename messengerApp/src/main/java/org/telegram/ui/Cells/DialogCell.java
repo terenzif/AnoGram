@@ -49,8 +49,8 @@ import androidx.collection.LongSparseArray;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 
-import dev.gosserness.anogram.AyuFilter;
-import dev.gosserness.anogram.AyuUtils;
+import com.clisix.kesgram.AyuFilter;
+import com.clisix.kesgram.AyuUtils;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.ChatObject;

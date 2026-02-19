@@ -37,7 +37,7 @@ import android.util.SparseArray;
 import androidx.annotation.RequiresApi;
 import androidx.core.graphics.ColorUtils;
 
-import dev.gosserness.anogram.AyuConstants;
+import com.clisix.kesgram.AyuConstants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
