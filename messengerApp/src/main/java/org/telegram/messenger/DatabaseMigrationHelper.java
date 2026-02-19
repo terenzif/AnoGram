@@ -1,6 +1,6 @@
 package org.telegram.messenger;
 
-import com.clisix.kesgram.AyuConfig;
+import dev.gosserness.anogram.AyuConfig;
 
 import org.telegram.SQLite.SQLiteCursor;
 import org.telegram.SQLite.SQLiteDatabase;

@@ -1,0 +1,270 @@
+package(default_visibility = ["//visibility:public"])
+
+config_setting(
+    name = "arm64-v8a",
+    values = {"android_cpu": "arm64-v8a"},
+)
+
+config_setting(
+    name = "armeabi-v7a",
+    values = {"android_cpu": "armeabi-v7a"},
+)
+
+config_setting(
+    name = "x86",
+    values = {"android_cpu": "x86"},
+)
+
+config_setting(
+    name = "x86_64",
+    values = {"android_cpu": "x86_64"},
+)
+
+cc_library(
+    name = "boringssl",
+    srcs = select({
+        ":arm64-v8a": ["boringssl/lib/libssl_arm64-v8a.a", "boringssl/lib/libcrypto_arm64-v8a.a"],
+        ":armeabi-v7a": ["boringssl/lib/libssl_armeabi-v7a.a", "boringssl/lib/libcrypto_armeabi-v7a.a"],
+        ":x86": ["boringssl/lib/libssl_x86.a", "boringssl/lib/libcrypto_x86.a"],
+        ":x86_64": ["boringssl/lib/libssl_x86_64.a", "boringssl/lib/libcrypto_x86_64.a"],
+    }),
+    hdrs = glob(["boringssl/include/**/*.h"]),
+    includes = ["boringssl/include"],
+)
+
+cc_library(
+    name = "ffmpeg",
+    srcs = select({
+        ":arm64-v8a": glob(["ffmpeg/arm64-v8a/*.a"]),
+        ":armeabi-v7a": glob(["ffmpeg/armeabi-v7a/*.a"]),
+        ":x86": glob(["ffmpeg/x86/*.a"]),
+        ":x86_64": glob(["ffmpeg/x86_64/*.a"]),
+    }),
+    hdrs = glob(["ffmpeg/include/**/*.h"]),
+    includes = ["ffmpeg/include"],
+)
+
+cc_library(
+    name = "tgnet",
+    srcs = glob(["tgnet/**/*.cpp", "tgnet/**/*.h", "tgnet/**/*.c"]),
+    hdrs = glob(["tgnet/**/*.h"]),
+    copts = ["-Wall", "-frtti", "-finline-functions", "-ffast-math", "-Os"],
+    defines = ["HAVE_PTHREAD"],
+    deps = [":boringssl"],
+)
+
+cc_library(
+    name = "rlottie",
+    srcs = glob([
+        "rlottie/src/lottie/**/*.cpp",
+        "rlottie/src/vector/**/*.cpp",
+        "rlottie/src/vector/**/*.h",
+    ]) + select({
+        ":armeabi-v7a": ["rlottie/src/vector/pixman/pixman-arm-neon-asm.S"],
+        ":arm64-v8a": ["rlottie/src/vector/pixman/pixman-arma64-neon-asm.S"],
+        "//conditions:default": [],
+    }),
+    hdrs = glob(["rlottie/inc/**/*.h", "rlottie/src/vector/**/*.h"]),
+    includes = [
+        "rlottie/inc",
+        "rlottie/src/vector",
+        "rlottie/src/vector/pixman",
+        "rlottie/src/vector/freetype",
+        "rlottie/src/vector/stb",
+    ],
+    copts = [
+        "-Wall", "-fno-rtti", "-finline-functions", "-ffast-math", "-Os",
+        "-fno-unwind-tables", "-fno-asynchronous-unwind-tables",
+        "-Wnon-virtual-dtor", "-Woverloaded-virtual", "-Wno-unused-parameter",
+        "-fvisibility=hidden",
+    ] + select({
+        ":armeabi-v7a": ["-fno-integrated-as"],
+        ":arm64-v8a": ["-fno-integrated-as"],
+        "//conditions:default": [],
+    }),
+    defines = ["HAVE_PTHREAD", "NDEBUG"] + select({
+        ":armeabi-v7a": ["USE_ARM_NEON"],
+        ":arm64-v8a": ["USE_ARM_NEON", "__ARM64_NEON__"],
+        "//conditions:default": [],
+    }),
+)
+
+cc_library(
+    name = "flac",
+    srcs = glob(["exoplayer/libFLAC/**/*.c"]),
+    hdrs = glob(["exoplayer/libFLAC/include/**/*.h"]),
+    includes = ["exoplayer/libFLAC/include"],
+    copts = ["-O3", "-funroll-loops", "-finline-functions", "-fPIC", "-frtti"],
+    defines = [
+        "_REENTRANT", "PIC", "U_COMMON_IMPLEMENTATION", "HAVE_SYS_PARAM_H",
+        "VERSION=\"1.3.1\"", "FLAC__NO_MD5", "FLAC__INTEGER_ONLY_LIBRARY", "FLAC__NO_ASM",
+    ],
+)
+
+cc_library(
+    name = "webp",
+    srcs = glob(["libwebp/**/*.c"]),
+    hdrs = glob(["libwebp/src/**/*.h"]),
+    includes = ["libwebp/src"],
+    copts = ["-Wall", "-finline-functions", "-ffast-math", "-Os"],
+    defines = ["HAVE_MALLOC_H", "HAVE_PTHREAD", "WEBP_USE_THREAD"],
+)
+
+cc_library(
+    name = "lz4",
+    srcs = glob(["lz4/**/*.c"]),
+    hdrs = glob(["lz4/**/*.h"]),
+    copts = ["-w", "-O3"],
+)
+
+cc_library(
+    name = "sqlite",
+    srcs = ["sqlite/sqlite3.c"],
+    hdrs = ["sqlite/sqlite3.h"],
+    copts = ["-fno-strict-aliasing", "-Os"],
+    defines = [
+        "NULL=0", "SOCKLEN_T=socklen_t", "LOCALE_NOT_USED", "ANDROID_NDK",
+        "DISABLE_IMPORTGL", "AVOID_TABLES", "ANDROID_TILE_BASED_DECODE",
+        "HAVE_STRCHRNUL=0", "ANDROID_ARMV6_IDCT",
+    ],
+)
+
+cc_library(
+    name = "breakpad",
+    srcs = glob([
+        "third_party/breakpad/src/client/linux/**/*.cc",
+        "third_party/breakpad/src/common/**/*.cc",
+        "third_party/breakpad/src/common/**/*.c",
+    ]) + ["third_party/breakpad/src/common/android/breakpad_getcontext.S"],
+    hdrs = glob(["third_party/breakpad/src/**/*.h"]),
+    includes = [
+        "third_party/breakpad/src",
+        "third_party/breakpad/src/common/android/include",
+    ],
+)
+
+# VOIP libraries (simplified globbing)
+cc_library(
+    name = "tgvoip",
+    srcs = glob([
+        "voip/libtgvoip/**/*.cpp",
+        "voip/tg_voip_jni.cpp",
+        "voip/libtgvoip/**/*.h",
+    ]),
+    hdrs = glob(["voip/**/*.h"]),
+    includes = [
+        "voip",
+        "voip/libtgvoip",
+        "voip/webrtc",
+        "voip/tgcalls",
+    ],
+    copts = ["-Wall", "-finline-functions", "-ffast-math", "-fno-strict-aliasing", "-O3", "-frtti"],
+    defines = [
+        "HAVE_PTHREAD", "__STDC_LIMIT_MACROS", "BSD=1", "USE_KISS_FFT",
+        "TGVOIP_NO_VIDEO", "NULL=0", "SOCKLEN_T=socklen_t", "LOCALE_NOT_USED",
+        "_LARGEFILE_SOURCE=1", "_FILE_OFFSET_BITS=64", "restrict=", "__EMX__",
+        "OPUS_BUILD", "FIXED_POINT", "USE_ALLOCA", "HAVE_LRINT", "HAVE_LRINTF", "TGVOIP_NO_DSP",
+        "WEBRTC_POSIX", "WEBRTC_LINUX", "WEBRTC_ANDROID",
+    ],
+    deps = [":boringssl", ":opus"],
+)
+
+cc_library(
+    name = "opus",
+    srcs = glob(["opus/**/*.c"]),
+    hdrs = glob(["opus/**/*.h"]),
+    includes = [
+        "opus/include",
+        "opus/silk",
+        "opus/silk/fixed",
+        "opus/celt",
+        "opus",
+        "opus/opusfile",
+    ],
+    defines = ["OPUS_BUILD", "FIXED_POINT", "USE_ALLOCA", "HAVE_LRINT", "HAVE_LRINTF"],
+)
+
+cc_library(
+    name = "openh264",
+    srcs = glob(["third_party/openh264/src/**/*.cpp", "third_party/openh264/src/**/*.S"]),
+    hdrs = glob(["third_party/openh264/src/**/*.h"]),
+    includes = ["third_party/openh264/src/codec/api/svc"],
+    copts = ["-O3", "-frtti", "-fexceptions"],
+)
+
+cc_library(
+    name = "rnnoise",
+    srcs = glob(["voip/rnnoise/src/**/*.c"]),
+    hdrs = glob(["voip/rnnoise/include/**/*.h"]),
+    includes = ["voip/rnnoise/include"],
+)
+
+cc_library(
+    name = "tgcalls",
+    srcs = glob([
+        "voip/tgcalls/**/*.cpp",
+        "voip/tgcalls/**/*.cc",
+        "voip/webrtc/**/*.cc",
+        "voip/webrtc/**/*.c",
+        "third_party/libsrtp/**/*.c",
+        "third_party/usrsctplib/**/*.c",
+        "third_party/pffft/**/*.c",
+        "third_party/rnnoise/**/*.cc",
+    ]) + select({
+        ":armeabi-v7a": glob(["voip/webrtc/**/*.S"]),
+        ":arm64-v8a": [], # Add asm if needed
+        "//conditions:default": [],
+    }),
+    hdrs = glob([
+        "voip/tgcalls/**/*.h",
+        "voip/webrtc/**/*.h",
+        "third_party/libsrtp/**/*.h",
+        "third_party/usrsctplib/**/*.h",
+    ]),
+    includes = [
+        "voip",
+        "voip/tgcalls",
+        "voip/webrtc",
+        "third_party/libsrtp/include",
+        "third_party/libsrtp/crypto/include",
+        "third_party/usrsctplib",
+    ],
+    copts = ["-Wall", "-finline-functions", "-ffast-math"],
+    defines = [
+        "WEBRTC_HAVE_DCSCTP", "RTC_DISABLE_TRACE_EVENTS", "WEBRTC_POSIX",
+        "WEBRTC_LINUX", "WEBRTC_ANDROID", "HAVE_WEBRTC_VIDEO",
+    ],
+    deps = [":boringssl", ":opus", ":rnnoise", ":ffmpeg"],
+)
+
+cc_library(
+    name = "voipandroid",
+    srcs = glob([
+        "voip/tgcalls/platform/android/**/*.cpp",
+        "voip/webrtc/sdk/android/**/*.cc",
+        "voip/org_telegram_messenger_voip_Instance.cpp",
+    ]),
+    hdrs = glob(["voip/**/*.h"]),
+    includes = ["voip"],
+    copts = ["-Wall", "-fexceptions"],
+    deps = [":tgcalls", ":boringssl"],
+)
+
+# Main library
+cc_binary(
+    name = "tmessages.45",
+    srcs = glob([
+        "*.c", "*.cpp", "*.cc",
+        "intro/*.c",
+        "exoplayer/*.cc",
+    ]),
+    linkshared = True,
+    deps = [
+        ":tgnet", ":rlottie", ":flac", ":webp", ":lz4", ":sqlite",
+        ":breakpad", ":tgvoip", ":openh264", ":rnnoise", ":tgcalls", ":voipandroid",
+        ":ffmpeg", ":boringssl",
+    ],
+    linkopts = [
+        "-landroid", "-llog", "-lEGL", "-lGLESv2", "-lOpenSLES", "-lz",
+    ],
+)
