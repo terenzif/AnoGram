@@ -103,6 +103,7 @@ android {
         buildConfigField("int", "APP_ID", localProperties.getProperty("APP_ID", "12345"))
         buildConfigField("String", "APP_HASH", "\"" + localProperties.getProperty("APP_HASH", "0123456789abcdef0123456789abcdef") + "\"")
         buildConfigField("String", "AYU_VERSION", "\"" + SimpleDateFormat("yyyyMMdd").format(Date()) + "\"")
+        buildConfigField 'String', 'GOOGLE_AUTH_CLIENT_ID', localProperties.getProperty("GOOGLE_AUTH_CLIENT_ID")
 
         resValue("string", "MAPS_V2_API", localProperties.getProperty("MAPS_V2_API", ""))
 
