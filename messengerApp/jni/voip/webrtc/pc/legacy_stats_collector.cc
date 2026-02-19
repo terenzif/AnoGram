@@ -84,7 +84,7 @@ const char* STATSREPORT_ADAPTER_TYPE_WILDCARD = "wildcard";
 template <typename ValueType>
 struct TypeForAdd {
   const StatsReport::StatsValueName name;
-  const ValueType& value;
+  const ValueType value;
 };
 
 typedef TypeForAdd<bool> BoolForAdd;
@@ -187,9 +187,10 @@ void ExtractStats(const cricket::VoiceReceiverInfo& info,
       {StatsReport::kStatsValueNameAccelerateRate, info.accelerate_rate},
       {StatsReport::kStatsValueNamePreemptiveExpandRate,
        info.preemptive_expand_rate},
-      {StatsReport::kStatsValueNameTotalAudioEnergy, info.total_output_energy},
+      {StatsReport::kStatsValueNameTotalAudioEnergy,
+       static_cast<float>(info.total_output_energy)},
       {StatsReport::kStatsValueNameTotalSamplesDuration,
-       info.total_output_duration}};
+       static_cast<float>(info.total_output_duration)}};
 
   const IntForAdd ints[] = {
       {StatsReport::kStatsValueNameCurrentDelayMs, info.delay_estimate_ms},
@@ -243,9 +244,10 @@ void ExtractStats(const cricket::VoiceSenderInfo& info,
   SetAudioProcessingStats(report, info.apm_statistics);
 
   const FloatForAdd floats[] = {
-      {StatsReport::kStatsValueNameTotalAudioEnergy, info.total_input_energy},
+      {StatsReport::kStatsValueNameTotalAudioEnergy,
+       static_cast<float>(info.total_input_energy)},
       {StatsReport::kStatsValueNameTotalSamplesDuration,
-       info.total_input_duration}};
+       static_cast<float>(info.total_input_duration)}};
 
   RTC_DCHECK_GE(info.audio_level, 0);
   const IntForAdd ints[] = {
