@@ -25,12 +25,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.clisix.kesgram.AyuConfig;
-import com.clisix.kesgram.AyuConstants;
-import com.clisix.kesgram.KESConfig;
-import com.clisix.kesgram.KESConstants;
-import com.clisix.kesgram.sync.AyuSyncController;
-import com.clisix.kesgram.ui.preferences.utils.AyuUi;
+import dev.gosserness.anogram.AyuConfig;
+import dev.gosserness.anogram.AyuConstants;
+import dev.gosserness.anogram.KESConfig;
+import dev.gosserness.anogram.KESConstants;
+import dev.gosserness.anogram.sync.AyuSyncController;
+import dev.gosserness.anogram.ui.preferences.utils.AyuUi;
 import com.exteragram.messenger.preferences.components.HeaderSettingsCell;
 import com.exteragram.messenger.preferences.updater.UpdaterBottomSheet;
 

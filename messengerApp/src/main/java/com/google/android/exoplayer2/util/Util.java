@@ -84,7 +84,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
-import com.clisix.kesgram.exceptions.AyuPrivacyException;
+import dev.gosserness.anogram.exceptions.AyuPrivacyException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
