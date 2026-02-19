@@ -54,7 +54,7 @@ What I'm suggesting, is something along the lines of this:
    ```
    APP_ID = 6
    APP_HASH = "eb06d4abfb49dc3eeb1aeb98ae0f581e"
-   GOOGLE_AUTH_CLIENT_ID = "760348033671-81kmi3pi84p11ub8hp9a1funsv0rn2p9.apps.googleusercontent.com"
+   GOOGLE_AUTH_CLIENT_ID = "your-google-auth-client-id-here.apps.googleusercontent.com"
    MAPS_V2_API = abcdef12345678
    
    SIGNING_KEY_PASSWORD = password
