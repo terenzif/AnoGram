@@ -227,13 +227,18 @@ public class Utilities {
     }
 
     public static byte[] hexToBytes(String hex) {
-        if (hex == null) {
+        if (hex == null || hex.length() % 2 != 0) {
             return null;
         }
         int len = hex.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4) + Character.digit(hex.charAt(i + 1), 16));
+            int d1 = Character.digit(hex.charAt(i), 16);
+            int d2 = Character.digit(hex.charAt(i + 1), 16);
+            if (d1 == -1 || d2 == -1) {
+                return null;
+            }
+            data[i / 2] = (byte) ((d1 << 4) + d2);
         }
         return data;
     }
