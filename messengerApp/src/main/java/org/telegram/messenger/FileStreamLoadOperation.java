@@ -10,12 +10,9 @@ package org.telegram.messenger;
 
 import android.net.Uri;
 
-import androidx.annotation.Nullable;
-
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.upstream.BaseDataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.TransferListener;
 
 import org.telegram.tgnet.TLRPC;
 
@@ -42,14 +39,6 @@ public class FileStreamLoadOperation extends BaseDataSource implements FileLoadO
 
     public FileStreamLoadOperation() {
         super(/* isNetwork= */ false);
-    }
-
-    @Deprecated
-    public FileStreamLoadOperation(@Nullable TransferListener listener) {
-        this();
-        if (listener != null) {
-            addTransferListener(listener);
-        }
     }
 
     @Override
