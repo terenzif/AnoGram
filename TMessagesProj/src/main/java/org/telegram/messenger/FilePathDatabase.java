@@ -412,17 +412,36 @@ public class FilePathDatabase {
     }
 
     public void removeFiles(List<CacheModel.FileInfo> filesToRemove) {
+        if (filesToRemove == null || filesToRemove.isEmpty()) {
+            return;
+        }
         postRunnable(() -> {
+            SQLitePreparedStatement state = null;
             try {
                 ensureDatabaseCreated();
+                if (database == null) {
+                    return;
+                }
                 database.beginTransaction();
+                state = database.executeFast("DELETE FROM paths_by_dialog_id WHERE path = ?");
                 for (int i = 0; i < filesToRemove.size(); i++) {
-                    database.executeFast("DELETE FROM paths_by_dialog_id WHERE path = '" + shield(filesToRemove.get(i).file.getPath()) + "'").stepThis().dispose();
+                    CacheModel.FileInfo fileInfo = filesToRemove.get(i);
+                    if (fileInfo == null || fileInfo.file == null) {
+                        continue;
+                    }
+                    state.requery();
+                    state.bindString(1, shield(fileInfo.file.getPath()));
+                    state.step();
                 }
             } catch (Throwable e) {
                 FileLog.e(e);
             } finally {
-                database.commitTransaction();
+                if (state != null) {
+                    state.dispose();
+                }
+                if (database != null) {
+                    database.commitTransaction();
+                }
             }
         });
     }
