@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
+@RunWith(RobolectricTestRunner.class)
 public class UtilitiesTest {
 
     @Test
@@ -18,7 +21,7 @@ public class UtilitiesTest {
     @Test
     public void testGenerateRandomString_Characters() {
         String randomString = Utilities.generateRandomString(1000);
-        assertTrue("Generated string contains invalid character",
+        assertTrue("Generated string contains invalid characters",
                 randomString.matches("[0-9a-zA-Z]*"));
     }
 
