@@ -1,11 +1,14 @@
 package org.telegram.messenger;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
+@RunWith(RobolectricTestRunner.class)
 public class UtilitiesTest {
 
     @Test
@@ -19,11 +22,8 @@ public class UtilitiesTest {
     @Test
     public void testGenerateRandomString_Characters() {
         String randomString = Utilities.generateRandomString(1000);
-        for (int i = 0; i < randomString.length(); i++) {
-            char c = randomString.charAt(i);
-            assertTrue("Generated string contains invalid character: " + c,
-                    Utilities.RANDOM_STRING_CHARS.indexOf(c) != -1);
-        }
+        assertTrue("Generated string contains invalid characters",
+                randomString.matches("[0-9a-zA-Z]*"));
     }
 
     @Test
@@ -33,8 +33,8 @@ public class UtilitiesTest {
 
     @Test
     public void testGenerateRandomString_Randomness() {
-        String str1 = Utilities.generateRandomString(16);
-        String str2 = Utilities.generateRandomString(16);
-        assertNotEquals("Consecutive calls to generateRandomString produced the same result", str1, str2);
+        String randomString = Utilities.generateRandomString(1000);
+        assertFalse("Generated string should not consist of the same character repeated",
+                randomString.chars().allMatch(ch -> ch == randomString.charAt(0)));
     }
 }

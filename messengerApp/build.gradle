@@ -64,6 +64,7 @@ dependencies {
     implementation "dev.gustavoavila:java-android-websocket-client:2.0.2"
     implementation "com.squareup.okhttp3:okhttp:5.3.2"
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.13'
 }
 
 def isPmBuild = "false"
@@ -78,6 +79,12 @@ android {
         buildConfig true
         viewBinding true
         resValues true
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 
     defaultConfig {
