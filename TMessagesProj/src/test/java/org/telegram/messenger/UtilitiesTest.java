@@ -1,7 +1,7 @@
 package org.telegram.messenger;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UtilitiesTest {
 
@@ -23,12 +23,12 @@ public class UtilitiesTest {
 
     @Test
     public void testHexToBytes_OddLength() {
-        assertNull(Utilities.hexToBytes("ABC"));
+        assertThrows(IllegalArgumentException.class, () -> Utilities.hexToBytes("ABC"));
     }
 
     @Test
     public void testHexToBytes_InvalidChars() {
-        assertNull(Utilities.hexToBytes("G1"));
-        assertNull(Utilities.hexToBytes("12G3"));
+        assertThrows(IllegalArgumentException.class, () -> Utilities.hexToBytes("G1"));
+        assertThrows(IllegalArgumentException.class, () -> Utilities.hexToBytes("12G3"));
     }
 }
